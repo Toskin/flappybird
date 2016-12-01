@@ -1,0 +1,14 @@
+package cz.uhk.pro2.flappybird.game.tiles;
+
+import java.awt.Graphics;
+import java.awt.Image;
+
+import cz.uhk.pro2.flappybird.game.Tile;
+
+public class EmptyTile extends AbstractWallTile{
+	public EmptyTile(Image image){
+		super(image);
+	}
+	
+
+}

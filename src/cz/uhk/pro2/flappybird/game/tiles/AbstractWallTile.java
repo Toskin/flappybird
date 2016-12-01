@@ -5,9 +5,9 @@ import java.awt.Image;
 
 import cz.uhk.pro2.flappybird.game.Tile;
 
-public class WallTile implements Tile {
+public abstract class AbstractWallTile implements Tile {
 	Image image;
-	public WallTile(Image image){
+	public AbstractWallTile(Image image){
 		this.image = image;
 	}
 
