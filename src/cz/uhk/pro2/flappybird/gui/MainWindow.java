@@ -28,7 +28,7 @@ public class MainWindow extends JFrame {
 		@Override
 		public void paint(Graphics g) {
 			super.paint(g);
-			gameBoard.draw(g);
+			gameBoard.drawAndDetectCollisions(g);
 		}
 	}
 	
@@ -54,7 +54,13 @@ public class MainWindow extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent e){
 				System.out.println("Mys");
+				if(e.getButton() == MouseEvent.BUTTON1){
 				gameBoard.kickTheBird();
+				} else if (e.getButton() == MouseEvent.BUTTON3){
+					gameBoard.reset();
+					x = 0;
+				}
+				
 			}
 		});
 		Timer t = new Timer(20, e -> {

@@ -9,6 +9,7 @@ public class GameBoard implements TickAware {
 	int shiftX;
 	int widthPix;
 	Bird bird;
+	boolean gameOver;
 	
 	public GameBoard() {
 		tiles = new Tile[20][10];
@@ -27,7 +28,7 @@ public class GameBoard implements TickAware {
 	 * Vykresleni herni plochy
 	 * @param g
 	 */
-	public void draw(Graphics g) {
+	public void drawAndDetectCollisions(Graphics g) {
 		int minJ = shiftX/Tile.SIZE;
 		int countJ = widthPix/Tile.SIZE + 2;
 		for (int i = 0; i < tiles.length; i++) {
@@ -38,6 +39,11 @@ public class GameBoard implements TickAware {
 					int viewportX = j*Tile.SIZE - shiftX;
 					int viewportY = i*Tile.SIZE;
 					t.draw(g, viewportX, viewportY);
+					if (t instanceof WallTile){
+						if (bird.collidesWithRectangle(viewportX, viewportY, Tile.SIZE, Tile.SIZE)){
+							gameOver = true;
+						}
+					}
 				}
 			}
 		}
@@ -46,12 +52,19 @@ public class GameBoard implements TickAware {
 	}
 @Override
 public void tick(long ticksSinceStart){
+	if (!gameOver){
 	shiftX = (int)ticksSinceStart;
 	bird.tick(ticksSinceStart);
+	}
 }
 
 public void kickTheBird(){
 	bird.kick();
+}
+
+public void reset(){
+	gameOver = false;
+	bird = new Bird(100,100);
 }
 }
 

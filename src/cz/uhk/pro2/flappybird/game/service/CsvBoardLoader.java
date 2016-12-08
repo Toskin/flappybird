@@ -102,6 +102,8 @@ public class CsvBoardLoader implements BoardLoader {
 			return new WallTile(resizedImage);
 		case "Empty":
 			return new EmptyTile(resizedImage);
+		case "Bird":
+			return null;
 		default:
 			throw new RuntimeException("Neznama trida dlazdice " + clazz);
 		}
