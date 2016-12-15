@@ -37,6 +37,7 @@ public class CsvBoardLoader implements BoardLoader {
 			int numberOfTypes = Integer.parseInt(line[0]);
 			//logger.log(Level.FINE,"Number of tile types:" + numberOfTypes);
 			System.out.println("Number of tile types:" +numberOfTypes );
+			BufferedImage imageOfTheBird = null;
 			Map<String, Tile> tileTypes = new HashMap<>();
 			for (int i = 0; i < numberOfTypes; i++){
 				line = br.readLine().split(";");
@@ -47,8 +48,13 @@ public class CsvBoardLoader implements BoardLoader {
 				int spriteWidth = Integer.parseInt(line[4]);
 				int spriteHeight = Integer.parseInt(line[5]);
 				String url = line[6];
+				if (clazz.equals("Bird")){
+			    imageOfTheBird = getImage(spriteX, spriteY, spriteWidth, spriteHeight, url);
+					
+				} else{
 				Tile tile = createTile(clazz, spriteX, spriteY, spriteWidth, spriteHeight, url);
 				tileTypes.put(type, tile);
+				}
 				//TODO
 				
 			}
@@ -74,7 +80,7 @@ public class CsvBoardLoader implements BoardLoader {
 					}
 				}
 			}
-			GameBoard gb = new GameBoard(tiles);
+			GameBoard gb = new GameBoard(tiles, imageOfTheBird);
 			return gb;
 		} catch (IOException e) {
 			throw new RuntimeException("Chyba pri cteni souboru s levelem", e);
@@ -86,14 +92,7 @@ public class CsvBoardLoader implements BoardLoader {
 	}
 
 	private Tile createTile(String clazz, int spriteX, int spriteY, int spriteWidth, int spriteHeight, String url) throws MalformedURLException, IOException {
-		//Nacist pic z URL
-		BufferedImage originalImage = ImageIO.read(new URL(url));
-		//Vzit potrebnou cast obrazku
-		BufferedImage croppedImage = originalImage.getSubimage(spriteX, spriteY, spriteWidth, spriteHeight);
-		//zvetsit/zmensit sprite aby pasoval
-		BufferedImage resizedImage = new BufferedImage(Tile.SIZE, Tile.SIZE, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D)resizedImage.getGraphics();
-		g.drawImage(croppedImage, 0, 0, Tile.SIZE, Tile.SIZE,null);
+		BufferedImage resizedImage = getImage(spriteX, spriteY, spriteWidth, spriteHeight, url);
 		//podle typu vytvorit instanci tridy
 		switch (clazz){
 		case "Wall":
@@ -108,6 +107,19 @@ public class CsvBoardLoader implements BoardLoader {
 			throw new RuntimeException("Neznama trida dlazdice " + clazz);
 		}
 		
+	}
+
+	private BufferedImage getImage(int spriteX, int spriteY, int spriteWidth, int spriteHeight, String url)
+			throws IOException, MalformedURLException {
+		//Nacist pic z URL
+		BufferedImage originalImage = ImageIO.read(new URL(url));
+		//Vzit potrebnou cast obrazku
+		BufferedImage croppedImage = originalImage.getSubimage(spriteX, spriteY, spriteWidth, spriteHeight);
+		//zvetsit/zmensit sprite aby pasoval
+		BufferedImage resizedImage = new BufferedImage(Tile.SIZE, Tile.SIZE, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = (Graphics2D)resizedImage.getGraphics();
+		g.drawImage(croppedImage, 0, 0, Tile.SIZE, Tile.SIZE,null);
+		return resizedImage;
 	}
 
 }
