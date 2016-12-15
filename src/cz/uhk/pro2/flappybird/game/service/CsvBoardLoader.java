@@ -18,6 +18,7 @@ import javax.imageio.ImageIO;
 
 import cz.uhk.pro2.flappybird.game.GameBoard;
 import cz.uhk.pro2.flappybird.game.Tile;
+import cz.uhk.pro2.flappybird.game.tiles.BonusTile;
 import cz.uhk.pro2.flappybird.game.tiles.EmptyTile;
 import cz.uhk.pro2.flappybird.game.tiles.WallTile;
 
@@ -48,11 +49,13 @@ public class CsvBoardLoader implements BoardLoader {
 				int spriteWidth = Integer.parseInt(line[4]);
 				int spriteHeight = Integer.parseInt(line[5]);
 				String url = line[6];
+				String extraInfo = (line.length >= 8) ? line[7] : "";// Pouzito u bonusu a jinych
+				Tile referencedTile = tileTypes.get(extraInfo);
 				if (clazz.equals("Bird")){
 			    imageOfTheBird = getImage(spriteX, spriteY, spriteWidth, spriteHeight, url);
 					
 				} else{
-				Tile tile = createTile(clazz, spriteX, spriteY, spriteWidth, spriteHeight, url);
+				Tile tile = createTile(clazz, spriteX, spriteY, spriteWidth, spriteHeight, url, referencedTile);
 				tileTypes.put(type, tile);
 				}
 				//TODO
@@ -75,9 +78,9 @@ public class CsvBoardLoader implements BoardLoader {
 					}else {
 						t = "";
 					}
-					if (!"".equals(t)){
+					//if (!"".equals(t)){
 						tiles[i][j] = tileTypes.get(t);
-					}
+					//}
 				}
 			}
 			GameBoard gb = new GameBoard(tiles, imageOfTheBird);
@@ -91,7 +94,7 @@ public class CsvBoardLoader implements BoardLoader {
 
 	}
 
-	private Tile createTile(String clazz, int spriteX, int spriteY, int spriteWidth, int spriteHeight, String url) throws MalformedURLException, IOException {
+	private Tile createTile(String clazz, int spriteX, int spriteY, int spriteWidth, int spriteHeight, String url, Tile referencedTile) throws MalformedURLException, IOException {
 		BufferedImage resizedImage = getImage(spriteX, spriteY, spriteWidth, spriteHeight, url);
 		//podle typu vytvorit instanci tridy
 		switch (clazz){
@@ -101,6 +104,8 @@ public class CsvBoardLoader implements BoardLoader {
 			return new WallTile(resizedImage);
 		case "Empty":
 			return new EmptyTile(resizedImage);
+		case "Bonus":
+			return new BonusTile(resizedImage, referencedTile);
 		case "Bird":
 			return null;
 		default:

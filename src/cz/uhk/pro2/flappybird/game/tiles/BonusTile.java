@@ -5,17 +5,17 @@ import java.awt.Image;
 
 import cz.uhk.pro2.flappybird.game.Tile;
 
-public abstract class AbstractWallTile implements Tile {
-	Image image;
-	public AbstractWallTile(Image image){
-		this.image = image;
+public class BonusTile extends AbstractTile{
+	Tile emptyTile;
+	public BonusTile(Image image, Tile emptyTile){
+		super(image);
+		this.emptyTile = emptyTile;
 	}
-
+	
 	@Override
 	public void draw(Graphics g, int x, int y) {
 		//g.drawRect(x, y, Tile.SIZE, Tile.SIZE);
-		g.drawImage(image, x, y, null);
+		emptyTile.draw(g, x, y);
 		
 	}
-
 }

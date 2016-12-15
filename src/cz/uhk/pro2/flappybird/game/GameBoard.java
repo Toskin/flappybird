@@ -11,15 +11,16 @@ public class GameBoard implements TickAware {
 	int widthPix;
 	Bird bird;
 	boolean gameOver;
+	Image imageOfTheBird;
 	
 	public GameBoard() {
 		tiles = new Tile[20][10];
 		//tiles[2][1] = new WallTile();
-		bird = new Bird(100,100);
+		bird = new Bird(100,100, imageOfTheBird);
 	}
 	public GameBoard(Tile[][] tiles, Image imageOfTheBird){
 		this.tiles = tiles;
-		//TODO imageOfTheBird
+		this.imageOfTheBird = imageOfTheBird;
 		reset();
 	}
 	
@@ -66,7 +67,7 @@ public void kickTheBird(){
 
 public void reset(){
 	gameOver = false;
-	bird = new Bird(100,100);
+	bird = new Bird(100,100, imageOfTheBird);
 }
 }
 

@@ -2,6 +2,7 @@ package cz.uhk.pro2.flappybird.game;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.geom.Ellipse2D;
 
 public class Bird implements TickAware {
@@ -15,9 +16,12 @@ public class Bird implements TickAware {
 	double velocityY = koefDown;
 	int ticksToFall = 0;
 	
-	public Bird(int initialX, int initialY){
+	Image image;
+	
+	public Bird(int initialX, int initialY, Image image){
 		this.viewportX = initialX;
 		this.viewportY = initialY;
+		this.image = image;
 	}
 	public void kick(){
 		velocityY = koefUp;
@@ -25,7 +29,9 @@ public class Bird implements TickAware {
 	}
 	public void draw(Graphics g){
 		g.setColor(Color.GREEN);
-		g.fillOval(viewportX-Tile.SIZE/2,(int)viewportY-Tile.SIZE/2,Tile.SIZE,Tile.SIZE);
+		//g.fillOval(viewportX-Tile.SIZE/2,(int)viewportY-Tile.SIZE/2,Tile.SIZE,Tile.SIZE);
+		//nakresli obrazek ptaka
+		g.drawImage(image, viewportX-Tile.SIZE/2,(int)viewportY-Tile.SIZE/2,null);
 		g.setColor(Color.BLACK);
 		g.drawString(viewportX+", "+(int)viewportY, viewportX,(int)viewportY);
 	}

@@ -44,30 +44,39 @@ public class MainWindow extends JFrame {
 			e1.printStackTrace();
 		}
 	
-		pnl.setPreferredSize(new Dimension(200, 200));
+		pnl.setPreferredSize(new Dimension(300, 200));
 		add(pnl, BorderLayout.CENTER);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
 		gameBoard.setWidthPix(pnl.getWidth());
+		
+		Timer t = new Timer(20, e -> {
+			gameBoard.tick(x++);
+			pnl.repaint();
+		});
+		//t.start();
 		
 		addMouseListener (new MouseAdapter(){
 			@Override
 			public void mousePressed(MouseEvent e){
 				System.out.println("Mys");
 				if(e.getButton() == MouseEvent.BUTTON1){
+					//V pripade ze timer nebezi
+					if (!t.isRunning()){
+						t.start();
+					}else{
 				gameBoard.kickTheBird();
+					}
 				} else if (e.getButton() == MouseEvent.BUTTON3){
 					gameBoard.reset();
 					x = 0;
+					gameBoard.tick(0);
+					pnl.repaint();
+					t.stop();
 				}
 				
 			}
 		});
-		Timer t = new Timer(20, e -> {
-			gameBoard.tick(x++);
-			pnl.repaint();
-		});
-		t.start();
 	}
 
 	public static void main(String[] args) {
