@@ -26,8 +26,8 @@ public class MainWindow extends JFrame {
 	
 	BoardPanel pnl = new BoardPanel();
 	GameBoard gameBoard;
-	private long x = 0;
-	private int time = 20;
+	private double x = 0;
+	private double mult = 1;
 	private boolean hard;
 	class BoardPanel extends JPanel {
 		@Override
@@ -53,13 +53,6 @@ public class MainWindow extends JFrame {
 		if(JOptionPane.showOptionDialog(pnl, "Zvol obtiznost", "Obtiznost", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]) == 1){
 			hard = true;
 		}
-		
-		
-		
-		
-		
-		
-		
 	
 		pnl.setPreferredSize(new Dimension(300, 200));
 		add(pnl, BorderLayout.CENTER);
@@ -67,17 +60,13 @@ public class MainWindow extends JFrame {
 		pack();
 		gameBoard.setWidthPix(pnl.getWidth());
 		
-		Timer t = new Timer(time, e -> {
-			gameBoard.tick(x++);
+		Timer t = new Timer(20, e -> {
+			gameBoard.tick((long) ((x++)+x*mult));
 			pnl.repaint();
 		});
-		//t.start();
 		Timer u = new Timer(1000, e -> {
-			System.out.println(time);
-
-			time = time - 1;
-			t.restart();
-			
+			System.out.println(mult);
+			mult = mult + 0.1;
 		});
 		
 		addMouseListener (new MouseAdapter(){
@@ -96,12 +85,12 @@ public class MainWindow extends JFrame {
 					}
 				} else if (e.getButton() == MouseEvent.BUTTON3){
 					gameBoard.reset();
-					time = 20;
 					x = 0;
 					gameBoard.tick(0);
 					pnl.repaint();
 					t.stop();
 					u.stop();
+					mult = 1;
 					
 				}
 				
