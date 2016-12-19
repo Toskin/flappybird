@@ -3,6 +3,7 @@ package cz.uhk.pro2.flappybird.game;
 import java.awt.Graphics;
 import java.awt.Image;
 
+import cz.uhk.pro2.flappybird.game.tiles.BonusTile;
 import cz.uhk.pro2.flappybird.game.tiles.WallTile;
 
 public class GameBoard implements TickAware {
@@ -45,6 +46,15 @@ public class GameBoard implements TickAware {
 					if (t instanceof WallTile){
 						if (bird.collidesWithRectangle(viewportX, viewportY, Tile.SIZE, Tile.SIZE)){
 							gameOver = true;
+						}
+					}
+					if (t instanceof BonusTile) {
+						if (bird.collidesWithRectangle(viewportX, viewportY, Tile.SIZE, Tile.SIZE)) {
+							((BonusTile) t).setIsCollectable(false);
+
+						}
+						if (shiftX == 0) {
+							((BonusTile) t).setIsCollectable(true);
 						}
 					}
 				}
