@@ -1,21 +1,21 @@
 package cz.uhk.pro2.flappybird.game.tiles;
 
-import java.awt.Graphics;
+
 import java.awt.Image;
 
+import cz.uhk.pro2.flappybird.game.Bird;
 import cz.uhk.pro2.flappybird.game.Tile;
 
-public class WallTile implements Tile {
+
+public class WallTile extends AbstractTile {
 	Image image;
 	public WallTile(Image image){
-		this.image = image;
+		super(image);
 	}
-
-	@Override
-	public void draw(Graphics g, int x, int y) {
-		//g.drawRect(x, y, Tile.SIZE, Tile.SIZE);
-		g.drawImage(image, x, y, null);
-		
-	}
+@Override
+public boolean testColisionHasDied(Bird bird, int x, int y) {
+	
+	return bird.collidesWithRectangle(x, y, Tile.SIZE, Tile.SIZE);
+}
 
 }

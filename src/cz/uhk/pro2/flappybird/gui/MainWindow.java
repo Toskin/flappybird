@@ -66,7 +66,7 @@ public class MainWindow extends JFrame {
 		});
 		Timer u = new Timer(1000, e -> {
 			System.out.println(mult);
-			mult = mult + 0.1;
+			mult = mult + 0.01;
 		});
 		
 		addMouseListener (new MouseAdapter(){

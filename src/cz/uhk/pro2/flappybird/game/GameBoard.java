@@ -43,20 +43,26 @@ public class GameBoard implements TickAware {
 					int viewportX = j*Tile.SIZE - shiftX;
 					int viewportY = i*Tile.SIZE;
 					t.draw(g, viewportX, viewportY);
-					if (t instanceof WallTile){
-						if (bird.collidesWithRectangle(viewportX, viewportY, Tile.SIZE, Tile.SIZE)){
-							gameOver = true;
-						}
+//					if (t instanceof WallTile){
+//						if (bird.collidesWithRectangle(viewportX, viewportY, Tile.SIZE, Tile.SIZE)){
+//							gameOver = true;
+//						}
+//					}
+//					if (t instanceof BonusTile) {
+//						if (bird.collidesWithRectangle(viewportX, viewportY, Tile.SIZE, Tile.SIZE)) {
+//							((BonusTile) t).setIsCollectable(false);
+//
+//						}
+//						if (shiftX == 0) {
+//							((BonusTile) t).setIsCollectable(true);
+//						}
+//					}
+					if (t.testColisionHasDied(bird, viewportX, viewportY)){
+						gameOver = true;
+					}else{
+						int extraPoints = t.testColisionObtainBonusPoint(bird, viewportX, viewportY);
 					}
-					if (t instanceof BonusTile) {
-						if (bird.collidesWithRectangle(viewportX, viewportY, Tile.SIZE, Tile.SIZE)) {
-							((BonusTile) t).setIsCollectable(false);
-
-						}
-						if (shiftX == 0) {
-							((BonusTile) t).setIsCollectable(true);
-						}
-					}
+					//t.refresh();
 				}
 			}
 		}
